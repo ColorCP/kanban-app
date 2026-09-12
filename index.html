@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任務看板 (Kanban App)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>📋 任務看板 (Kanban App)</h1>
+      <p class="subtitle">輕鬆管理專案任務與進度</p>
+    </header>
+
+    <!-- 新增任務表單 -->
+    <section class="task-form-section">
+      <form id="task-form" class="task-form">
+        <input 
+          type="text" 
+          id="task-title" 
+          placeholder="請輸入任務名稱..." 
+          required 
+          autocomplete="off"
+        >
+        <button type="submit" id="add-task-btn">新增任務</button>
+      </form>
+    </section>
+
+    <!-- 看板欄位容器 -->
+    <main class="kanban-board">
+      <!-- 待處理 -->
+      <div class="column" id="todo" data-status="todo">
+        <div class="column-header">
+          <span class="column-dot todo-dot"></span>
+          <h2>待處理</h2>
+          <span class="task-count" id="todo-count">0</span>
+        </div>
+        <div class="task-list" id="todo-list"></div>
+      </div>
+
+      <!-- 進行中 -->
+      <div class="column" id="in-progress" data-status="in-progress">
+        <div class="column-header">
+          <span class="column-dot in-progress-dot"></span>
+          <h2>進行中</h2>
+          <span class="task-count" id="in-progress-count">0</span>
+        </div>
+        <div class="task-list" id="in-progress-list"></div>
+      </div>
+
+      <!-- 已完成 -->
+      <div class="column" id="done" data-status="done">
+        <div class="column-header">
+          <span class="column-dot done-dot"></span>
+          <h2>已完成</h2>
+          <span class="task-count" id="done-count">0</span>
+        </div>
+        <div class="task-list" id="done-list"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
