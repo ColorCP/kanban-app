@@ -3,64 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>任務看板 (Kanban App)</title>
-  <link rel="stylesheet" href="style.css">
+  <title>簡約待辦看板 | Minimal Tasks Kanban</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=kanban3">
 </head>
 <body>
-  <div class="app-container">
-    <header class="app-header">
-      <h1>📋 任務看板 (Kanban App)</h1>
-      <p class="subtitle">輕鬆管理專案任務與進度</p>
-    </header>
+  <div class="page-wrapper">
+    <main class="kanban-app-container">
+      <!-- Header Section -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="date-badge" id="current-date">載入中...</div>
+          <h1 class="app-title">任務看板</h1>
+          <p class="app-subtitle">拖曳卡片以管理待辦進度，有條不紊地平衡工作與生活</p>
+        </div>
+      </header>
 
-    <!-- 新增任務表單 -->
-    <section class="task-form-section">
-      <form id="task-form" class="task-form">
-        <input 
-          type="text" 
-          id="task-title" 
-          placeholder="請輸入任務名稱..." 
-          required 
-          autocomplete="off"
-        >
-        <button type="submit" id="add-task-btn">新增任務</button>
+      <!-- Task Creation Form -->
+      <form id="todo-form" class="todo-form" autocomplete="off">
+        <div class="input-main-row">
+          <input 
+            type="text" 
+            id="task-input" 
+            class="form-input task-text-input" 
+            placeholder="記錄新的待辦事項..." 
+            required 
+            aria-label="任務內容"
+          >
+          <button type="submit" id="add-btn" class="btn-primary" aria-label="新增任務">
+            <svg class="icon-plus" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            <span>新增任務</span>
+          </button>
+        </div>
+
+        <div class="input-meta-row">
+          <!-- Priority Select -->
+          <div class="meta-field">
+            <label for="priority-select" class="meta-label">優先程度</label>
+            <div class="select-wrapper">
+              <select id="priority-select" class="form-select priority-select" aria-label="選擇優先程度">
+                <option value="high">🔥 High</option>
+                <option value="medium" selected>⚡ Medium</option>
+                <option value="low">☕ Low</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Category Select -->
+          <div class="meta-field">
+            <label for="category-select" class="meta-label">分類</label>
+            <div class="select-wrapper">
+              <select id="category-select" class="form-select" aria-label="選擇分類">
+                <option value="work">💼 工作</option>
+                <option value="life">🌿 生活</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Assignee Input -->
+          <div class="meta-field flex-grow">
+            <label for="assignee-input" class="meta-label">負責人</label>
+            <div class="input-with-icon">
+              <span class="input-icon">👤</span>
+              <input 
+                type="text" 
+                id="assignee-input" 
+                class="form-input assignee-input" 
+                placeholder="例如：Penny、Alex..." 
+                maxlength="15"
+                aria-label="負責人姓名"
+              >
+            </div>
+          </div>
+        </div>
       </form>
-    </section>
 
-    <!-- 看板欄位容器 -->
-    <main class="kanban-board">
-      <!-- 待處理 -->
-      <div class="column" id="todo" data-status="todo">
-        <div class="column-header">
-          <span class="column-dot todo-dot"></span>
-          <h2>待處理</h2>
-          <span class="task-count" id="todo-count">0</span>
+      <!-- Filter and Status Control Bar -->
+      <div class="controls-bar">
+        <div class="filter-tabs" role="tablist" aria-label="任務分類篩選">
+          <button type="button" class="tab-btn active" data-filter="all" role="tab" aria-selected="true">全部類別</button>
+          <button type="button" class="tab-btn" data-filter="work" role="tab" aria-selected="false">💼 工作</button>
+          <button type="button" class="tab-btn" data-filter="life" role="tab" aria-selected="false">🌿 生活</button>
         </div>
-        <div class="task-list" id="todo-list"></div>
+
+        <div class="stats-box">
+          <span class="stats-tip">⚡ 排序規則：優先程度 (High > Medium > Low) 排序，可跨欄自由拖曳</span>
+        </div>
       </div>
 
-      <!-- 進行中 -->
-      <div class="column" id="in-progress" data-status="in-progress">
-        <div class="column-header">
-          <span class="column-dot in-progress-dot"></span>
-          <h2>進行中</h2>
-          <span class="task-count" id="in-progress-count">0</span>
-        </div>
-        <div class="task-list" id="in-progress-list"></div>
+      <!-- Kanban Board Wrapper with Horizontal Scroll Support -->
+      <div class="kanban-scroll-wrapper">
+        <section class="kanban-board" aria-label="三欄任務看板">
+          <!-- Column 1: To-do -->
+          <div class="kanban-column" data-status="todo" id="col-todo">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-todo"></span>
+                <h2 class="column-title">To-do</h2>
+              </div>
+              <span class="column-counter" id="count-todo">0</span>
+            </div>
+            <ul class="column-drop-zone" id="list-todo" data-status="todo" aria-label="To-do 任務清單">
+              <!-- Populated dynamically -->
+            </ul>
+          </div>
+
+          <!-- Column 2: process -->
+          <div class="kanban-column" data-status="process" id="col-process">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-process"></span>
+                <h2 class="column-title">process</h2>
+              </div>
+              <span class="column-counter" id="count-process">0</span>
+            </div>
+            <ul class="column-drop-zone" id="list-process" data-status="process" aria-label="process 任務清單">
+              <!-- Populated dynamically -->
+            </ul>
+          </div>
+
+          <!-- Column 3: done -->
+          <div class="kanban-column" data-status="done" id="col-done">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-done"></span>
+                <h2 class="column-title">done</h2>
+              </div>
+              <span class="column-counter" id="count-done">0</span>
+            </div>
+            <ul class="column-drop-zone" id="list-done" data-status="done" aria-label="done 任務清單">
+              <!-- Populated dynamically -->
+            </ul>
+          </div>
+        </section>
       </div>
 
-      <!-- 已完成 -->
-      <div class="column" id="done" data-status="done">
-        <div class="column-header">
-          <span class="column-dot done-dot"></span>
-          <h2>已完成</h2>
-          <span class="task-count" id="done-count">0</span>
-        </div>
-        <div class="task-list" id="done-list"></div>
-      </div>
+      <!-- Footer Actions -->
+      <footer class="app-footer">
+        <button type="button" id="clear-done-btn" class="btn-text" style="display: none;">
+          清除 done 欄位已完成項目
+        </button>
+      </footer>
     </main>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=kanban3"></script>
 </body>
 </html>

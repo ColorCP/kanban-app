@@ -23,10 +23,13 @@
 | 功能模組 | 特點描述 |
 | :--- | :--- |
 | **三欄位狀態管理** | 提供「待處理 (To Do)」、「進行中 (In Progress)」、「已完成 (Done)」三階段工作流，每欄皆有即時動態計數徽章。 |
-| **雙軌流轉機制** | 支援 **HTML5 原生拖放 (Drag and Drop)** 與 **一鍵快捷切換按鈕**，滿足不同裝置與操作習慣。 |
-| **持久化離線儲存** | 自動與瀏覽器 `LocalStorage` 雙向同步，頁面重新整理或關閉後資料依然完好保留。 |
-| **資料安全與防護** | 內建 XSS (Cross-Site Scripting) 轉義過濾機制，確保使用者輸入內容安全渲染。 |
-| **現代化深邃視覺** | 精心調配的玻璃擬態卡片、平滑過渡動畫與響應式網格設計 (RWD)，適配桌面端與行動端瀏覽。 |
+| **優先度與自動排序** | 支援「🔥 High」、「⚡ Medium」、「☕ Low」三種優先度設定，列表依權重自動即時排序。 |
+| **分類標籤與即時篩選** | 支援「💼 工作」與「🌿 生活」多分類標籤，提供上方快速 Tab 切換篩選檢視。 |
+| **負責人標籤掛載** | 支援「👤 負責人」欄位輸入與展示，清晰標記每項任務負責對象。 |
+| **雙軌流轉與拖放機制** | 完整支援 **HTML5 原生拖曳 (Drag and Drop)** 跨欄流轉，卡片拖曳帶有半透明微動效與平滑過渡。 |
+| **持久化離線儲存** | 自動與瀏覽器 `LocalStorage` 雙向同步，支援多版本向下相容防禦，重新整理資料完整保留。 |
+| **資料安全與防護** | 內建 XSS (Cross-Site Scripting) 實體轉義過濾機制，確保使用者輸入內容安全渲染。 |
+| **簡約暖色美學排版** | 精心調配的暖色系 UI、Google Fonts 字型（Plus Jakarta Sans）、平滑過渡與 RWD 行動端適配。 |
 
 ---
 
@@ -38,25 +41,31 @@
 kanban-app/
 ├── .agents/
 │   ├── rules/
-│   │   ├── development.md     # 前端代碼標準與開發規範
-│   │   └── docs-writing.md    # 文件撰寫規範與品質標準
+│   │   ├── development.md     # 前端代碼標準、單向資料流與安全規範
+│   │   └── docs-writing.md    # 技術文件撰寫規範與品質標準
+│   ├── skills/
+│   │   ├── ux-check/
+│   │   │   └── SKILL.md       # UX 易用性審查技能 (支援 /ux-check)
+│   │   └── vibe-coding-frontend-builder/
+│   │       └── SKILL.md       # VibeCoding 敏捷開發流程技能
 │   └── workflows/
-│       └── ux-check.md        # UX 與介面易用性審查工作流
+│       └── ux-check.md.bak    # 舊版工作流備份存檔
 ├── .gitignore                 # Git 忽略設定
-├── README.md                  # 專案說明與開發手冊
-├── app.js                     # 核心業務邏輯、狀態管理與事件監聽
-├── index.html                 # 應用程式入口與 DOM 結構
-└── style.css                  # 現代化樣式表與響應式排版 (RWD)
+├── README.md                  # 專案說明與完整開發手冊
+├── app.js                     # 核心看板邏輯、狀態管理、拖曳、篩選與排序 (KanbanApp)
+├── index.html                 # 應用程式入口（簡約暖色系三欄任務看板）
+└── style.css                  # 現代暖色系樣式表與 RWD 響應式排版
 ```
 
 ### 檔案核心職責說明
 
-- **`index.html`**：語意化 HTML5 架構，包含頂部任務輸入表單、三欄式看板容器與狀態計數節點。
-- **`style.css`**：純 CSS3 實作，涵蓋現代配色變數、Flexbox/Grid 排版、卡片懸停微動效與拖曳陰影反饋。
-- **`app.js`**：狀態驅動 (State-driven) 的 Vanilla JS 架構，負責 LocalStorage 讀寫、DOM 動態渲染、拖曳事件與按鈕事件委派。
+- **`index.html`**：語意化 HTML5 架構，包含頂部日期徽章、任務建立表單（內容、優先度、分類、負責人）、分類篩選 Tab 與三欄式看板容器。
+- **`style.css`**：純 CSS3 實作，涵蓋現代暖色配色變數、Google Fonts、Flexbox/Grid 排版、卡片懸停微動效與拖曳陰影反饋。
+- **`app.js`**：狀態驅動 (State-driven) 的 `KanbanApp` 類別架構，負責 LocalStorage 讀寫、優先權自動排序、分類篩選、DOM 動態渲染與拖曳事件。
 - **`.agents/rules/development.md`**：前端代碼規範、狀態管理單向流、XSS 防禦與雙軌操作標準。
 - **`.agents/rules/docs-writing.md`**：規範技術文件標準、Markdown 格式以及品質檢核流程。
-- **`.agents/workflows/ux-check.md`**：定義介面易用性、無障礙與防呆機制的審查 SOP（支援 `@ux-check.md` 觸發）。
+- **`.agents/skills/ux-check/SKILL.md`**：定義介面易用性、無障礙與防呆機制的審查技能（支援 `/ux-check` 觸發）。
+- **`.agents/skills/vibe-coding-frontend-builder/SKILL.md`**：封裝 VibeCoding 六步驟敏捷迭代流程標準規範。
 
 ---
 
