@@ -37,9 +37,11 @@
 ```text
 kanban-app/
 ├── .agents/
-│   └── rules/
-│       ├── development.md     # 前端代碼標準與開發規範
-│       └── docs-writing.md    # 文件撰寫規範與品質標準
+│   ├── rules/
+│   │   ├── development.md     # 前端代碼標準與開發規範
+│   │   └── docs-writing.md    # 文件撰寫規範與品質標準
+│   └── workflows/
+│       └── ux-check.md        # UX 與介面易用性審查工作流
 ├── .gitignore                 # Git 忽略設定
 ├── README.md                  # 專案說明與開發手冊
 ├── app.js                     # 核心業務邏輯、狀態管理與事件監聽
@@ -54,6 +56,7 @@ kanban-app/
 - **`app.js`**：狀態驅動 (State-driven) 的 Vanilla JS 架構，負責 LocalStorage 讀寫、DOM 動態渲染、拖曳事件與按鈕事件委派。
 - **`.agents/rules/development.md`**：前端代碼規範、狀態管理單向流、XSS 防禦與雙軌操作標準。
 - **`.agents/rules/docs-writing.md`**：規範技術文件標準、Markdown 格式以及品質檢核流程。
+- **`.agents/workflows/ux-check.md`**：定義介面易用性、無障礙與防呆機制的審查 SOP（支援 `@ux-check.md` 觸發）。
 
 ---
 
